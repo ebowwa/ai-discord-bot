@@ -11,7 +11,7 @@ load_dotenv()
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-COMMAND_PREFIX = '!claude'
+COMMAND_PREFIX = '!ai'
 MAX_MESSAGE_LENGTH = 2000
 
 intents = discord.Intents.default()
@@ -25,8 +25,8 @@ ai_client = CompletionClient()
 @bot.event
 async def on_ready():
     logger.info(f'✅ Bot is ready! Logged in as {bot.user}')
-    logger.info('🤖 Claude Discord Bridge is now active')
-    await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name="for Claude requests..."))
+    logger.info('🤖 AI Discord Bridge is now active')
+    await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name="for AI requests..."))
 
 @bot.event
 async def on_message(message):
@@ -37,7 +37,7 @@ async def on_message(message):
         prompt = message.content[len(COMMAND_PREFIX):].strip()
         
         if not prompt:
-            await message.reply('Please provide a message for Claude. Example: `!claude Hello, how are you?`')
+            await message.reply('Please provide a message for the AI. Example: `!ai Hello, how are you?`')
             return
 
         try:
@@ -50,14 +50,14 @@ async def on_message(message):
                     }]
                 )
 
-            claude_response = response["choices"][0]["message"]["content"]
+            ai_response = response["choices"][0]["message"]["content"]
             
-            if len(claude_response) > MAX_MESSAGE_LENGTH:
-                chunks = split_message(claude_response, MAX_MESSAGE_LENGTH - 100)
+            if len(ai_response) > MAX_MESSAGE_LENGTH:
+                chunks = split_message(ai_response, MAX_MESSAGE_LENGTH - 100)
                 
                 for i, chunk in enumerate(chunks):
                     embed = discord.Embed(
-                        title='🤖 Claude Response' if i == 0 else f'🤖 Claude Response (Part {i + 1})',
+                        title='🤖 AI Response' if i == 0 else f'🤖 AI Response (Part {i + 1})',
                         description=chunk,
                         color=0x7289DA,
                         timestamp=message.created_at
@@ -67,8 +67,8 @@ async def on_message(message):
                     await message.reply(embed=embed)
             else:
                 embed = discord.Embed(
-                    title='🤖 Claude Response',
-                    description=claude_response,
+                    title='🤖 AI Response',
+                    description=ai_response,
                     color=0x7289DA,
                     timestamp=message.created_at
                 )
@@ -132,14 +132,14 @@ async def list_models(ctx):
                 inline=True
             )
         
-        embed.set_footer(text='Use !claude_model <model_name> <message> to use a specific model')
+        embed.set_footer(text='Use !ai_model <model_name> <message> to use a specific model')
         await ctx.send(embed=embed)
         
     except Exception as e:
         await ctx.send(f"Error listing models: {str(e)}")
 
-@bot.command(name='claude_model')
-async def claude_with_model(ctx, model_name: str, *, message: str):
+@bot.command(name='ai_model')
+async def ai_with_model(ctx, model_name: str, *, message: str):
     """Chat with AI using a specific model"""
     if not message.strip():
         await ctx.reply('Please provide a message after the model name.')
@@ -193,9 +193,9 @@ async def claude_with_model(ctx, model_name: str, *, message: str):
         
         await ctx.reply(embed=error_embed)
 
-@bot.command(name='help_claude')
-async def help_claude(ctx):
-    """Show help for Claude commands"""
+@bot.command(name='help_ai')
+async def help_ai(ctx):
+    """Show help for AI commands"""
     embed = discord.Embed(
         title='🤖 AI Discord Bot Help',
         description='This bot provides access to multiple AI models through a unified interface!',
@@ -208,12 +208,12 @@ async def help_claude(ctx):
     )
     embed.add_field(
         name='Model Commands',
-        value='`!models` - List available AI models\n`!claude_model <model> <message>` - Use specific model\nExample: `!claude_model gpt-4 Explain quantum physics`',
+        value='`!models` - List available AI models\n`!ai_model <model> <message>` - Use specific model\nExample: `!ai_model gpt-4 Explain quantum physics`',
         inline=False
     )
     embed.add_field(
         name='Other Commands',
-        value='`!ping` - Check bot responsiveness\n`!help_claude` - Show this help message',
+        value='`!ping` - Check bot responsiveness\n`!help_ai` - Show this help message',
         inline=False
     )
     embed.set_footer(text='Powered by AI Proxy Core - Supports OpenAI, Gemini, Ollama')

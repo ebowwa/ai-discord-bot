@@ -7,8 +7,8 @@ A Discord bot that provides unified access to multiple AI models (OpenAI, Gemini
 - **Multi-Provider Support**: Access OpenAI, Gemini, and Ollama models through one interface
 - **Automatic Provider Detection**: ai-proxy-core auto-detects available providers from environment
 - **Model Discovery**: List all available models with `!models` command
-- **Specific Model Selection**: Use `!claude_model <model> <message>` for specific models
-- **AI Chat Integration**: Use `!claude <message>` for default model chat
+- **Specific Model Selection**: Use `!ai_model <model> <message>` for specific models
+- **AI Chat Integration**: Use `!ai <message>` for default model chat
 - **Rich Embed Responses**: Formatted responses with user attribution and model info
 - **Long Message Handling**: Automatically splits long responses into multiple messages
 - **Zero-Config Setup**: Just add your API keys and go
@@ -94,25 +94,25 @@ When adding the bot to your server, make sure it has these permissions:
 
 ### Basic Commands
 
-- `!claude <message>` - Chat with default AI model
+- `!ai <message>` - Chat with default AI model
 - `!models` - List all available AI models
-- `!claude_model <model> <message>` - Chat with specific model
+- `!ai_model <model> <message>` - Chat with specific model
 - `!ping` - Check bot responsiveness
-- `!help_claude` - Show help information
+- `!help_ai` - Show help information
 
 ### Examples
 
 ```
 # Basic chat (uses default model)
-!claude What is the weather like today?
+!ai What is the weather like today?
 
 # List available models
 !models
 
 # Use specific models
-!claude_model gpt-4 Write a Python function to calculate fibonacci numbers
-!claude_model gemini-1.5-flash Explain quantum computing in simple terms
-!claude_model llama2 Tell me a joke
+!ai_model gpt-4 Write a Python function to calculate fibonacci numbers
+!ai_model gemini-1.5-flash Explain quantum computing in simple terms
+!ai_model llama2 Tell me a joke
 ```
 
 ## Running the Bot
